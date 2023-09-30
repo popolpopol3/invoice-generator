@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<title>Un template pour les factures de Lisa !</title>
+
+		<style>
+			.invoice-box {
+				max-width: unset;
+				margin: auto;
+				padding: 30px;
+				border: 0px;
+				box-shadow: none;
+				font-size: 16px;
+				line-height: 24px;
+				font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+				color: #555;
+			}
+
+			.invoice-box table {
+				width: 100%;
+				line-height: inherit;
+				text-align: left;
+			}
+
+			.invoice-box table td {
+				padding: 5px;
+				vertical-align: top;
+			}
+
+			.invoice-box table tr td:nth-child(2) {
+				text-align: right;
+			}
+
+			.invoice-box table tr.top table td {
+				padding-bottom: 20px;
+			}
+
+			.invoice-box table tr.top table td.title {
+				font-size: 24px;
+				line-height: 45px;
+				color: #333;
+			}
+
+			.invoice-box table tr.information table td {
+				padding-bottom: 40px;
+			}
+
+			.invoice-box table tr.heading td {
+				background: #eee;
+				border-bottom: 1px solid #ddd;
+				font-weight: bold;
+			}
+
+			.invoice-box table tr.details td {
+				padding-bottom: 20px;
+			}
+
+			.invoice-box table tr.item td {
+				border-bottom: 1px solid #eee;
+			}
+
+			.invoice-box table tr.item.last td {
+				border-bottom: none;
+			}
+
+			.invoice-box table tr.total td:nth-child(2) {
+				border-top: 2px solid #eee;
+				font-weight: bold;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="invoice-box">
+			<table cellpadding="0" cellspacing="0">
+				<tr class="top">
+					<td colspan="2">
+						<table>
+							<tr class="top">
+								<td class="title">
+									<img src="https://pics.freeicons.io/uploads/icons/png/8996226961622186573-512.png" width="100px" height="100px" />
+								</td>
+
+								<td class="title">
+									<span th:text="|FACTURE # ${n_commande}|"></span><br />
+									<span th:text="|Le ${date}|"></span><br />
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				<tr class="information">
+					<td colspan="2">
+						<table>
+							<tr>
+								<td>
+									GAEC Leï Sounaïo<br />
+									1823 Chemin de Montauban - 26170 Rioms<br />
+									Tél. 06 89 56 88 75<br />
+                                    SIRET 811 938 752 00011<br />
+									N° TVA FR89811938752
+								</td>
+
+								<td>
+									<span th:text="|${prenom} ${nom}|"></span><br />
+									<u>Adresse de facturation : </u><br />
+									<span th:text="|${adresse_facture}|"></span><br />
+									<div th:if="${siret_acheteur} != ''">
+										<span th:text="| SIRET : ${siret_acheteur}|"></span><br />
+									</div>
+									<div th:if="${tva_acheteur} != ''">
+										<span th:text="| N° TVA : ${tva_acheteur}|"></span><br />
+									</div>
+									<u>Adresse de livraison : </u><br />
+									<span th:text="|${adresse_livraison}|"></span>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				<tr class="item">
+					<td>Type d'opération</td>
+
+					<td>Vente</td>
+				</tr>
+				<tr class="heading">
+					<td>Article</td>
+
+					<td>Quantité</td>
+				</tr>
+
+				<tr th:each="prod : ${prods}" class="item">
+					<td th:text="${prod.name}"></td>
+					<td th:text="${prod.quantity}"></td>
+				</tr>
+
+				<tr class="heading">
+					<td>Détail</td>
+
+					<td>Prix €</td>
+				</tr>
+
+				<tr class="item">
+					<td>Total H.T.</td>
+
+					<td><span th:text="|${total_ht}|"></span></td>
+				</tr>
+
+				<tr class="item">
+					<td>% T.V.A.</td>
+
+					<td><span th:text="|${tva}|"></span></td>
+				</tr>
+
+				<tr class="item last">
+					<td>Total T.V.A.</td>
+
+					<td><span th:text="|${total_tva}|"></span></td>
+				</tr>
+
+				<tr class="total">
+					<td></td>
+
+					<td>Total T.T.C. : <span th:text="|${total_ttc} €|"></span></td>
+				</tr>
+
+				<tr class="information">
+					<td>Réglé
+						<span th:text="|${date_paiement}|"></span>
+						en
+						<span th:text="|${mode_paiement}|"></span>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>
